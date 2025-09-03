@@ -1,0 +1,206 @@
+<header class="site-header">
+  <div class="header-content">
+
+    <!-- Left Links (Desktop) -->
+    <div class="left-links">
+      <a href="{% url 'map' %}" class="map-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="currentColor" d="m15 21l-6-2.1l-4.65 1.8q-.5.2-.925-.112T3 19.75v-14q0-.325.188-.575T3.7 4.8L9 3l6 2.1l4.65-1.8q.5-.2.925.113T21 4.25v14q0 .325-.187.575t-.513.375zm-1-2.45V6.85l-4-1.4v11.7z"/>
+        </svg>
+        Mapa kamieni
+      </a>
+    </div>
+
+    <!-- Center Logo -->
+    <a href="{% url 'home' %}" class="logo">
+      <img src="/media/stones/images/app_images/kamieniorze.png" alt="Kamieniorze" class="logo-img">
+    </a>
+
+    <!-- Right Links (Desktop) -->
+    <nav class="nav-links">
+      <a href="https://www.tiktok.com/@kamieniorze">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48"/>
+        </svg>
+      </a>
+      <a href="https://www.instagram.com/kamieniorze/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"/>
+        </svg>
+      </a>
+      <a href="https://www.youtube.com/@Kamieniorze">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="currentColor" d="m10 15l5.19-3L10 9zm11.56-7.83c.13.47.22 1.1.28 1.9c.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83c-.25.9-.83 1.48-1.73 1.73c-.47.13-1.33.22-2.65.28c-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44c-.9-.25-1.48-.83-1.73-1.73c-.13-.47-.22-1.1-.28-1.9c-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83c.25-.9.83-1.48 1.73-1.73c.47-.13 1.33-.22 2.65-.28c1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44c.9.25 1.48.83 1.73 1.73"/>
+        </svg>
+      </a>
+      <a href="{% url 'contact' %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="currentColor" d="m12 22l-.25-3h-.25q-3.55 0-6.025-2.475T3 10.5t2.475-6.025T11.5 2q1.775 0 3.313.662t2.7 1.825t1.824 2.7T20 10.5q0 1.875-.612 3.6t-1.676 3.2t-2.525 2.675T12 22m-.525-6.025q.425 0 .725-.3t.3-.725t-.3-.725t-.725-.3t-.725.3t-.3.725t.3.725t.725.3M10.75 12.8h1.5q0-.75.15-1.05t.95-1.1q.45-.45.75-.975t.3-1.125q0-1.275-.862-1.913T11.5 6q-1.1 0-1.85.613T8.6 8.1l1.4.55q.125-.425.475-.837T11.5 7.4t1.013.375t.337.825q0 .425-.25.763t-.6.687q-.875.75-1.062 1.188T10.75 12.8"/>
+        </svg>
+          Kontakt
+      </a>
+    </nav>
+
+    <!-- Hamburger (Mobile) -->
+    <div class="hamburger" onclick="toggleMobileMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/>
+      </svg>
+    </div>
+
+    <!-- Overlay -->
+    <div id="menuOverlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-top">
+        <a href="{% url 'map' %}" class="mobile-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+            <path fill="currentColor" d="m15 21l-6-2.1l-4.65 1.8q-.5.2-.925-.112T3 19.75v-14q0-.325.188-.575T3.7 4.8L9 3l6 2.1l4.65-1.8q.5-.2.925.113T21 4.25v14q0 .325-.187.575t-.513.375zm-1-2.45V6.85l-4-1.4v11.7z"/>
+          </svg>
+          Mapa kamieni
+        </a>
+          <br>
+        <a href="https://www.tiktok.com/@kamieniorze" class="mobile-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48"/>
+          </svg>
+          TikTok
+        </a>
+        <a href="https://www.instagram.com/kamieniorze/" class="mobile-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"/>
+          </svg>
+          Instagram
+        </a>
+        <a href="https://www.youtube.com/@Kamieniorze" class="mobile-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+            <path fill="currentColor" d="m10 15l5.19-3L10 9zm11.56-7.83c.13.47.22 1.1.28 1.9c.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83c-.25.9-.83 1.48-1.73 1.73c-.47.13-1.33.22-2.65.28c-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44c-.9-.25-1.48-.83-1.73-1.73c-.13-.47-.22-1.1-.28-1.9c-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83c.25-.9.83-1.48 1.73-1.73c.47-.13 1.33-.22 2.65-.28c1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44c.9.25 1.48.83 1.73 1.73"/>
+          </svg>
+          YouTube
+        </a>
+      </div>
+
+      <a href="{% url 'contact' %}" class="mobile-btn kontakt">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="currentColor" d="m12 22l-.25-3h-.25q-3.55 0-6.025-2.475T3 10.5t2.475-6.025T11.5 2q1.775 0 3.313.662t2.7 1.825t1.824 2.7T20 10.5q0 1.875-.612 3.6t-1.676 3.2t-2.525 2.675T12 22m-.525-6.025q.425 0 .725-.3t.3-.725t-.3-.725t-.725-.3t-.725.3t-.3.725t.3.725t.725.3M10.75 12.8h1.5q0-.75.15-1.05t.95-1.1q.45-.45.75-.975t.3-1.125q0-1.275-.862-1.913T11.5 6q-1.1 0-1.85.613T8.6 8.1l1.4.55q.125-.425.475-.837T11.5 7.4t1.013.375t.337.825q0 .425-.25.763t-.6.687q-.875.75-1.062 1.188T10.75 12.8"/>
+        </svg>
+        Kontakt
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 11000;
+  padding: 8px 20px;
+  background-image: url("/media/stones/images/app_images/background.png");
+  background-repeat: repeat;
+  background-size: auto;
+  background-position: top left;
+  background-color: rgba(255, 255, 255, 0.3);
+  background-blend-mode: lighten;
+  box-shadow: 0 0 10px black;
+}
+
+.header-content {
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  z-index: 1001;
+}
+
+.logo-img { height: 50px; width: auto; }
+
+.left-links, .nav-links { display: flex; gap: 8px; align-items: center; }
+
+.nav-links a, .map-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 8px;
+  border-radius: 12px;
+  color: #fff; text-decoration: none; font-weight: 600; font-size: 18px;
+  box-shadow: 2px 2px 5px rgba(60,35,25,1);
+  text-shadow: 2px 2px 2px rgba(60,35,25,1);
+  transition: transform 0.3s ease;
+  background-image: url("/media/stones/images/app_images/background.png");
+  background-repeat: repeat; background-size: auto; background-position: top left;
+  background-color: rgba(75,46,46,0.3); background-blend-mode: overlay;
+}
+
+.nav-links a:hover, .map-link:hover { transform: scale(1.1); }
+
+svg { filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.7)); }
+
+.hamburger { display: none; cursor: pointer; z-index: 1000; color: #fff; }
+
+.mobile-menu {
+  position: fixed; top: 0; left: -260px;
+  width: 250px; height: 100vh;
+  background-image: url("/media/stones/images/app_images/background.png");
+  padding: 5px; display: flex; flex-direction: column; justify-content: space-between;
+  transition: left 0.3s ease-in-out; z-index: 1002;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+  background-color: rgba(255, 255, 255, 0.3); background-blend-mode: lighten;
+}
+
+.mobile-menu-top { display: flex; flex-direction: column; gap: 8px; }
+
+.mobile-menu a.mobile-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 8px;
+  border-radius: 12px;
+  color: #fff; font-weight: 600; font-size: 24px;
+  background-image: url("/media/stones/images/app_images/background.png");
+  box-shadow: 2px 2px 5px rgba(60,35,25,1);
+  text-shadow: 2px 2px 2px rgba(60,35,25,1);
+  text-decoration: none; transition: transform 0.3s ease;
+  background-color: rgba(75,46,46,0.3); background-blend-mode: overlay;
+}
+
+.mobile-menu a.mobile-btn.kontakt {
+  margin-top: auto;  /* push to bottom */
+  position: sticky;
+  bottom: 10px;
+}
+
+.mobile-menu a.mobile-btn:last-child { margin-bottom: 10px; }
+
+.mobile-menu.active { left: 0; }
+
+#menuOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1001; }
+#menuOverlay.active { display: block; }
+
+@media (max-width: 768px) {
+  .header-content { justify-content: space-between; position: relative; }
+  .hamburger { display: flex; }
+  .logo { position: absolute; left: 50%; transform: translateX(-50%); }
+  .left-links, .nav-links { display: none; }
+  .logo-img { height: 45px; }
+  .site-header { padding: 6px 12px; }
+  .mobile-menu a svg { width: 24px; height: 24px; }
+}
+</style>
+
+<script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('menuOverlay');
+  menu.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+</script>

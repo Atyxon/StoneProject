@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Kod QR - {{ stone.title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        img { height: 300px; }
+        button { padding: 10px 20px; font-size: 16px; margin-top: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Kod QR dla: {{ stone.title }}</h1>
+    <p>Adres w QR: <br><strong>{{ qr_url }}</strong></p>
+    <br>
+    <button onclick="window.print()">🖨️ Drukuj</button>
+    <br><br><br><br><br><br><br><br><br>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:200px; height:200px;"><br><br><br><br><br><br><br><br>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:250px; height:250px;"><br><br><br><br><br><br><br><br>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:300px; height:300px;"><br><br><br><br><br><br><br><br>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:350px; height:350px;"><br><br><br><br><br><br><br><br>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:400px; height:400px;"><br><br><br><br><br><br><br><br>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:450px; height:450px;"><br><br><br><br><br><br><br><br>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:500px; height:500px;"><br><br><br><br><br><br><br><br>
+</body>
+</html>

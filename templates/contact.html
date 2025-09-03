@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Kontakt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <style>
+    .contact-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        font-family: sans-serif;
+        padding: 1.5rem;
+    }
+    .contact-wrapper h1 {
+        margin-top: 0;
+    }
+    .contact-info {
+        background: #f9f9f9;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .contact-item {
+        margin-bottom: 1.2rem;
+    }
+    .contact-item strong {
+        display: inline-block;
+        min-width: 120px;
+        color: #333;
+    }
+    .contact-form {
+        margin-top: 2rem;
+    }
+    .contact-form textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        resize: none;
+        box-sizing: border-box;
+    }
+    .contact-form input {
+        width: 250px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+    .contact-form button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        background: #333;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .contact-form button:hover {
+        background: #555;
+    }
+    .messages {
+
+        background: #d4edda;       /* zielone tło dla sukcesu */
+        color: #155724;            /* ciemnozielony tekst */
+        padding: 5px 5px;
+        border-radius: 8px;
+        margin-top: 1rem;
+        opacity: 1;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        animation: fadeOut 6s forwards; /* 6 sekund animacji, forwards = zatrzymanie na końcu */
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        80% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    }
+    </style>
+</head>
+<body>
+    {% include "partials/header.html" %}
+
+    <div class="main-content">
+        <div class="contact-wrapper">
+            <h1>Kontakt</h1>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>Email:</strong> <a href="mailto:kamieniorze@gmail.com">kamieniorze@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Telefon:</strong> +48 733 013 830
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h2>Napisz do nas</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Email" required>
+                    <textarea name="message" placeholder="Wiadomość" rows="5" required></textarea>
+                    <button type="submit">Wyślij</button>
+                </form>
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% include "partials/footer.html" %}
+</body>
+</html>
