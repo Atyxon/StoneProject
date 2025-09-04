@@ -1,3 +1,4 @@
+{% load static %}
 <style>
 /* STONE CARD */
 .stone-card {
@@ -80,7 +81,7 @@
 <div class="stone-card">
   <div class="stone-image-wrapper">
     <a href="{% url 'stone_detail' stone.pk %}">
-      <img src="{% if stone.image %}{{ stone.image.url }}{% else %}/media/stones/images/app_images/no_image.jpeg{% endif %}" alt="{{ stone.title }}">
+      <img src="{% if stone.image %}{{ stone.image.url }}{% else %}{% static 'app_images/no_image.jpeg' %}{% endif %}" alt="{{ stone.title }}">
     </a>
   </div>
   <div class="stone-content">

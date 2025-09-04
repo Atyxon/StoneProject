@@ -225,7 +225,7 @@
 
                 <div class="stone-top">
                     <div class="stone-image">
-                        <img src="{% if stone.image %}{{ stone.image.url }}{% else %}/media/stones/images/app_images/no_image.jpeg{% endif %}" alt="{{ stone.title }}">
+                        <img src="{% if stone.image %}{{ stone.image.url }}{% else %}{% static 'app_images/no_image.jpeg' %}{% endif %}" alt="{{ stone.title }}">
                     </div>
 
                     <div class="stone-map">
@@ -240,8 +240,8 @@
                                 attribution: '© OpenStreetMap'
                             }).addTo(map);
 
-                            var marker = L.icon({ iconUrl: '/media/stones/images/app_images/marker.png', iconSize: [48,48], iconAnchor: [24,48], popupAnchor: [0,-32] });
-                            var marker_green = L.icon({ iconUrl: '/media/stones/images/app_images/marker_green.png', iconSize: [48,48], iconAnchor: [24,48], popupAnchor: [0,-32] });
+                            var marker = L.icon({ iconUrl: '/static/app_images/marker.png', iconSize: [48,48], iconAnchor: [24,48], popupAnchor: [0,-32] });
+                            var marker_green = L.icon({ iconUrl: '/static/app_images/marker_green.png', iconSize: [48,48], iconAnchor: [24,48], popupAnchor: [0,-32] });
 
                             var iconToUse = {{ stone.found|yesno:"true,false" }} ? marker_green : marker;
                             L.marker([lat, lng], { icon: iconToUse }).addTo(map).bindPopup('{{ stone.title|escapejs }}');
@@ -275,7 +275,7 @@
                 <div class="finder-comment">
 
                     <div class="comment-avatar">
-                        <img src="/app_images/profile.png" alt="avatar">
+                        <img src="{% static 'app_images/profile.png' %}" alt="avatar">
                     </div>
 
                     <div class="finder-comment-body">
@@ -307,7 +307,7 @@
                     {% for comment in comments %}
                         <div class="comment">
                             <div class="comment-avatar">
-                                <img src="/app_images/profile.png" alt="avatar">
+                                <img src="{% static 'app_images/profile.png' %}" alt="avatar">
                             </div>
                             <div class="comment-body">
                                 <div class="comment-author">
