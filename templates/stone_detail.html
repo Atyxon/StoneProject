@@ -280,7 +280,7 @@
 
                     <div class="finder-comment-body">
                         <div class="comment-author">{{ stone.finder_comment.author }}</div>
-                        <p>{{ stone.finder_comment.text }}</p>
+                        <div style="overflow-wrap: break-word; word-break: break-word;">{{ stone.finder_comment.text }}</div>
                     </div>
 
                     {% if stone.finder_comment.image %}
@@ -301,6 +301,7 @@
                     <div class="row">
                         <button type="submit">Dodaj komentarz</button>
                     </div>
+                    <br>
                 </form>
 
                 {% if comments %}
@@ -314,7 +315,7 @@
                                     {{ comment.author }}
                                     <small class="comment-time">{{ comment.created_at|naturaltime }}</small>
                                 </div>
-                                <div class="comment-text">{{ comment.text }}</div>
+                                <div class="comment-text" style="overflow-wrap: break-word; word-break: break-word;">{{ comment.text }}</div>
                             </div>
                         </div>
                     {% endfor %}

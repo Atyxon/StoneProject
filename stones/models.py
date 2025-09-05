@@ -36,6 +36,13 @@ class Stone(models.Model):
         from django.urls import reverse
         return reverse('stone_qr', args=[self.pk])
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["title", "latitude", "longitude"],
+                name="unique_stone_location"
+            )
+        ]
 
 class Comment(models.Model):
     stone = models.ForeignKey(Stone, related_name="comments", on_delete=models.CASCADE)

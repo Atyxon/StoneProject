@@ -9,6 +9,8 @@ from io import BytesIO
 from .forms import CommentForm, FinderCommentForm
 from django.contrib import messages
 from django.core.mail import send_mail
+from datetime import timedelta
+from django.utils import timezone
 
 
 def home(request):
@@ -21,7 +23,7 @@ def contact(request):
         email = request.POST.get("email")
         message = request.POST.get("message")
 
-        subject = f"Wiadomość od {email}"
+        subject = f"[MSG] Wiadomość od {email}"
         body = f"Nadawca: {email}\n\nTreść wiadomości:\n{message}"
 
         send_mail(
@@ -55,7 +57,30 @@ def stone_detail(request, pk):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.stone = stone
-            comment.save()
+
+            # 🔒 prevent accidental duplicates
+            recent_duplicate = stone.comments.filter(
+                text=comment.text,
+                created_at__gte=timezone.now() - timedelta(seconds=5)
+            )
+            if request.user.is_authenticated:
+                recent_duplicate = recent_duplicate.filter(author=request.user)
+
+            if not recent_duplicate.exists():
+                comment.save()
+
+            subject = f"[COM] {comment.author} Napisał komentarz pod: {stone.title}"
+            body = f'"{comment.text}"\n\n{settings.SITE_DOMAIN}{stone.pk}'
+
+            send_mail(
+                subject,
+                body,
+                "kamieniorze.auto@gmail.com",
+                ["kamieniorze@gmail.com"],
+
+                fail_silently=False,
+            )
+
             return redirect("stone_detail", pk=stone.pk)
     else:
         form = CommentForm()
@@ -78,6 +103,17 @@ def mark_stone_found(request, token, pk):
         from django.utils.timezone import now
         stone.found_at = now()
         stone.save()
+
+        subject = f"[SFD] Odnaleziono kamień: {stone.title}"
+        body = f"Ktoś właśnie odnalazł kamień {stone.title}\n\n{settings.SITE_DOMAIN}{stone.pk}"
+
+        send_mail(
+            subject,
+            body,
+            "kamieniorze.auto@gmail.com",
+            ["kamieniorze@gmail.com"],
+            fail_silently=False,
+        )
 
     if request.method == "POST":
         form = FinderCommentForm(request.POST, request.FILES)
