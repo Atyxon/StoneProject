@@ -69,7 +69,7 @@ def stone_detail(request, pk):
             if not recent_duplicate.exists():
                 comment.save()
 
-            subject = f"[COM] {comment.author} Napisał komentarz pod: {stone.title}"
+            subject = f"[CNT] {comment.author} Napisał komentarz pod: {stone.title}"
             body = f'"{comment.text}"\n\n{settings.SITE_DOMAIN}{stone.pk}'
 
             send_mail(
