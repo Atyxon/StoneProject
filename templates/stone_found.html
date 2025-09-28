@@ -2,307 +2,168 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <title>Kamień odnaleziony!</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta charset="UTF-8">
-    <style>
-        :root {
-            --brand: #4CAF50;
-            --card: #ffffff;
-            --shadow: 0 10px 25px rgba(0,0,0,.08);
-            --radius: 16px;
-        }
+<meta charset="UTF-8">
+<title>Kamień odnaleziony!</title>
+<link rel="stylesheet" href="{% static 'styles.css' %}">
+<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<style>
+    :root {
+        --brand: #4CAF50;
+        --card: #ffffff;
+        --shadow: 0 10px 25px rgba(0,0,0,.08);
+        --radius: 16px;
+    }
+    body { margin:0; font-family: Arial,sans-serif; position: relative; }
+    header, .site-header { width: 100%; z-index: 10001; position: relative; }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-repeat: repeat;
-            background-size: auto;
-            background-position: top left;
-            position: relative;
-        }
+    /* Loader */
+    #loader {
+        position: fixed; inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        z-index: 99999;
+    }
+    .spinner {
+        border:6px solid #eee;
+        border-top:6px solid #333;
+        border-radius:50%;
+        width:50px;
+        height:50px;
+        animation:spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform:rotate(0deg);} 100% { transform:rotate(360deg);} }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-        }
+    .page-content { opacity:0; transition: opacity 0.5s ease; }
+    .page-content.loaded { opacity:1; }
 
-        header, .site-header { width: 100%; z-index: 10001; position: relative; }
+    main.page { display:flex; justify-content:center; padding:8px; }
+    .card {
+        width:100%; max-width:760px; background:var(--card);
+        border-radius:var(--radius); box-shadow:var(--shadow);
+        padding:24px; text-align:center; box-sizing:border-box;
+    }
+    h1 { margin:6px 0 2px; font-size: clamp(24px,5vw,32px); color: var(--brand);}
+    .congrats { font-size: clamp(18px,4vw,22px); color:#2e7d32; margin:6px 0 18px; font-weight:700; }
+    .hero { display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .stone-image-container { width:100%; max-width:600px; aspect-ratio:1/1; overflow:hidden; border-radius:14px; box-shadow:0 12px 24px rgba(0,0,0,.12);}
+    .stone-image-container img { width:100%; height:100%; object-fit:cover; display:block; }
 
-        main.page {
-            display: flex;
-            justify-content: center;
-            padding: 8px;
-            position:relative;
-            z-index: 1;
-            margin-bottom: auto;
-        }
+    .comment-form { margin-top:22px; padding:16px; border-radius:12px; background:#fafafa; border:1px solid #eee; text-align:left; box-sizing:border-box; }
+    .comment-form h3 { margin-bottom:10px; }
+    .comment-form textarea, .comment-form input[type="text"] {
+        width:100%; padding:10px 12px; border-radius:10px; border:1px solid #ddd; margin-bottom:8px; font:inherit;
+    }
+    .row { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:12px; }
+    .file-container {
+        position:relative; width:100%; max-width:100%; aspect-ratio:1/1;
+        border:3px dashed var(--brand); border-radius:16px; display:flex;
+        justify-content:center; align-items:center; background:#fff; margin:0 auto 1rem auto; overflow:hidden;
+    }
+    .file-container img.preview { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none; }
+    .file-buttons { display:flex; flex-direction:column; gap:10px; align-items:center; width:100%; }
+    .file-buttons button {
+        padding:10px 16px; border-radius:8px; border:none; background:var(--brand);
+        color:white; font-size:1rem; font-weight:600; cursor:pointer; width:90%; max-width:220px;
+    }
+    .file-buttons button:hover { background:#43a047; }
+    .cancel-btn {
+        position:absolute; top:8px; right:8px; width:32px; height:32px;
+        background:rgba(0,0,0,0.6); color:white; border:none; border-radius:50%;
+        font-size:18px; font-weight:bold; text-align:center; line-height:32px; display:none; cursor:pointer; z-index:3;
+    }
+    .comment-form button[type="submit"] { padding:10px 20px; border-radius:8px; border:none; background:#333; color:white; cursor:pointer; transition:0.3s; }
+    .comment-form button[type="submit"]:hover { background:#555; }
 
-        .card {
-            width: 100%;
-            max-width: 760px;
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 24px;
-            text-align: center;
-            box-sizing: border-box;
-        }
+    canvas#confetti { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
 
-        h1 { margin: 6px 0 2px; font-size: clamp(24px, 5vw, 32px); color: var(--brand); }
-        .congrats { font-size: clamp(18px, 4vw, 22px); color: #2e7d32; margin: 6px 0 18px; font-weight: 700; }
-
-        .hero { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-
-        .hero .stone-image-container {
-            width: 100%;
-            max-width: 600px;
-            aspect-ratio: 1 / 1;
-            overflow: hidden;
-            border-radius: 14px;
-            box-shadow: 0 12px 24px rgba(0,0,0,.12);
-        }
-        .hero .stone-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .comment-form { margin-top: 22px; padding: 16px; border-radius: 12px; background: #fafafa; border: 1px solid #eee; text-align: left; box-sizing: border-box; }
-        .comment-form h3 { margin-bottom: 10px; }
-        .comment-form textarea, .comment-form input[type="text"] {
-            width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 8px; font: inherit;
-        }
-
-        .row { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 12px; }
-
-        .file-container {
-            position: relative;
-            width: 100%;
-            max-width: 100%;
-            aspect-ratio: 1/1;
-            border: 3px dashed var(--brand);
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #ffffff;
-            margin: 0 auto 1rem auto;
-            overflow: hidden;
-        }
-        .file-container img.preview { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
-
-        .file-buttons { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
-        .file-buttons button {
-            padding: 10px 16px;
-            border-radius: 8px;
-            border: none;
-            background: var(--brand);
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 90%;
-            max-width: 220px;
-        }
-        .file-buttons button:hover { background: #43a047; }
-
-        /* Desktop: only one bigger button and smaller file container */
-        @media (min-width: 601px) {
-            .file-buttons {
-                flex-direction: row;
-                justify-content: center;
-            }
-            .file-buttons button:first-child {
-                width: 300px;
-                font-size: 1.2rem;
-                padding: 14px 20px;
-            }
-            .file-buttons button:last-child {
-                display: none;
-            }
-            .file-container {
-                max-width: 500px;
-            }
-            .comment-form input[type="text"] {
-                max-width: 300px;
-            }
-        }
-
-        .cancel-btn {
-            position: absolute;
-            top: 8px; right: 8px;
-            width: 32px; height: 32px;
-            background: rgba(0,0,0,0.6); color: white;
-            border: none; border-radius: 50%;
-            font-size: 18px; font-weight: bold; text-align: center; line-height: 32px;
-            display: none; cursor: pointer; z-index: 3;
-        }
-
-        .comment-form button[type="submit"] { padding: 10px 20px; border-radius: 8px; border: none; background: #333; color: white; cursor: pointer; transition: 0.3s; }
-        .comment-form button[type="submit"]:hover { background: #555; }
-
-        canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
-
-        @media (max-width: 600px) {
-            .file-buttons button { width: 90%; max-width: 180px; }
-            .row { justify-content: center; }
-            h1 { font-size: clamp(20px, 6vw, 28px); }
-            .congrats { font-size: clamp(16px, 4.5vw, 20px); }
-            .hero h2 { font-size: clamp(16px, 4vw, 22px); }
-            .hero .stone-image-container { max-width: 100%; }
-        }
-    </style>
+    @media(max-width:600px){ .file-buttons button{width:90%; max-width:180px;} .row{justify-content:center;} }
+</style>
 </head>
 <body>
     {% include "partials/header.html" %}
 
-    <main class="page" aria-live="polite">
-        <section class="card">
-            <h1>Gratulacje!</h1>
-            <p class="congrats">Udało Ci się odnaleźć kamień</p>
+    <!-- Loader -->
+    <div id="loader"><div class="spinner"></div></div>
 
-            <div class="hero">
-                <h2>{{ stone.title }}</h2>
-                <div class="stone-image-container">
-                    <img src="{{ stone.image.url }}" alt="{{ stone.title }}">
+    <!-- Page Content -->
+    <div class="page-content">
+        <main class="page" aria-live="polite">
+            <section class="card">
+                <h1>Gratulacje!</h1>
+                <p class="congrats">Udało Ci się odnaleźć kamień</p>
+                <div class="hero">
+                    <h2>{{ stone.title }}</h2>
+                    <div class="stone-image-container">
+                        <img src="{{ stone.image.url }}" alt="{{ stone.title }}">
+                    </div>
                 </div>
-            </div>
-
-            <div class="comment-form">
-                <h3>Zostaw komentarz</h3>
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-
-                    <div class="file-container">
-                        <div class="file-buttons" id="fileButtons">
-                            <button type="button" onclick="document.getElementById('galleryInput').click()">Wybierz zdjęcie</button>
-                            <button type="button" onclick="document.getElementById('cameraInput').click()">Zrób zdjęcie</button>
+                <div class="comment-form">
+                    <h3>Zostaw komentarz</h3>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="file-container">
+                            <div class="file-buttons" id="fileButtons">
+                                <button type="button" onclick="document.getElementById('galleryInput').click()">Wybierz zdjęcie</button>
+                                <button type="button" onclick="document.getElementById('cameraInput').click()">Zrób zdjęcie</button>
+                            </div>
+                            <img class="preview" id="imagePreview">
+                            <button type="button" class="cancel-btn" id="cancelBtn">×</button>
                         </div>
-                        <img class="preview" id="imagePreview">
-                        <button type="button" class="cancel-btn" id="cancelBtn">×</button>
-                    </div>
-
-                    <input type="file" id="galleryInput" name="image" accept="image/*" style="display:none;">
-                    <input type="file" id="cameraInput" name="image" accept="image/*" capture="environment" style="display:none;">
-
-                    {{ form.author }}
-                    {{ form.text }}
-
-                    <div class="row">
-                        <button type="submit">Dodaj komentarz</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-    </main>
+                        <input type="file" id="galleryInput" name="image" accept="image/*" style="display:none;">
+                        <input type="file" id="cameraInput" name="image" accept="image/*" capture="environment" style="display:none;">
+                        {{ form.author }}
+                        {{ form.text }}
+                        <div class="row">
+                            <button type="submit">Dodaj komentarz</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <canvas id="confetti"></canvas>
 
     <script>
-        // Image preview
-        const galleryInput = document.getElementById('galleryInput');
-        const cameraInput = document.getElementById('cameraInput');
-        const preview = document.getElementById('imagePreview');
-        const fileButtons = document.getElementById('fileButtons');
-        const cancelBtn = document.getElementById('cancelBtn');
+    // Loader waits for all images + header
+    window.addEventListener('load', function(){
+        const loader = document.getElementById('loader');
+        const content = document.querySelector('.page-content');
+        loader.style.display = 'none';
+        content.classList.add('loaded');
+    });
 
-        function showPreview(file){
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-            fileButtons.style.display = 'none';
-            cancelBtn.style.display = 'block';
-        }
-        function clearImage(){
-            preview.src = '';
-            preview.style.display = 'none';
-            fileButtons.style.display = 'flex';
-            cancelBtn.style.display = 'none';
-            galleryInput.value = '';
-            cameraInput.value = '';
-        }
-        galleryInput.addEventListener('change', e=>{ if(e.target.files[0]) showPreview(e.target.files[0]); });
-        cameraInput.addEventListener('change', e=>{ if(e.target.files[0]) showPreview(e.target.files[0]); });
-        cancelBtn.addEventListener('click', clearImage);
+    // Image preview
+    const galleryInput = document.getElementById('galleryInput');
+    const cameraInput = document.getElementById('cameraInput');
+    const preview = document.getElementById('imagePreview');
+    const fileButtons = document.getElementById('fileButtons');
+    const cancelBtn = document.getElementById('cancelBtn');
+    function showPreview(file){
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+        fileButtons.style.display = 'none';
+        cancelBtn.style.display = 'block';
+    }
+    function clearImage(){ preview.src=''; preview.style.display='none'; fileButtons.style.display='flex'; cancelBtn.style.display='none'; galleryInput.value=''; cameraInput.value=''; }
+    galleryInput.addEventListener('change', e=>{ if(e.target.files[0]) showPreview(e.target.files[0]); });
+    cameraInput.addEventListener('change', e=>{ if(e.target.files[0]) showPreview(e.target.files[0]); });
+    cancelBtn.addEventListener('click', clearImage);
 
-        // Confetti animation
-        const canvas = document.getElementById('confetti');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let confettiAnimation;
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function createParticles(count = 150) {
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
-                    r: Math.random() * 6 + 2,
-                    d: Math.random() * 2 + 1,
-                    color: `hsl(${Math.random() * 360}, 80%, 60%)`,
-                    tilt: Math.random() * 10 - 5,
-                    tiltAngleIncrement: Math.random() * 0.07 + 0.05,
-                    tiltAngle: 0
-                });
-            }
-        }
-
-        function drawConfetti() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.lineWidth = p.r;
-                ctx.strokeStyle = p.color;
-                ctx.moveTo(p.x + p.tilt + p.r / 4, p.y);
-                ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 4);
-                ctx.stroke();
-            });
-            updateParticles();
-            confettiAnimation = requestAnimationFrame(drawConfetti);
-        }
-
-        function updateParticles() {
-            particles.forEach(p => {
-                p.tiltAngle += p.tiltAngleIncrement;
-                p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
-                p.x += Math.sin(p.tiltAngle) * 0.8; // zig-zag motion
-                p.tilt = Math.sin(p.tiltAngle - p.r / 2) * 15;
-
-                if (p.y > canvas.height) {
-                    p.y = -20;
-                    p.x = Math.random() * canvas.width;
-                }
-            });
-        }
-
-        createParticles();
-        drawConfetti();
-
-        // Stop confetti after 5 seconds with a smooth fade
-        setTimeout(() => {
-            let opacity = 1;
-            const fade = setInterval(() => {
-                opacity -= 0.05;
-                canvas.style.opacity = opacity;
-                if (opacity <= 0) {
-                    clearInterval(fade);
-                    cancelAnimationFrame(confettiAnimation);
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    canvas.style.display = 'none';
-                }
-            }, 50);
-        }, 5000);
+    // Confetti animation
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let particles = [], confettiAnimation;
+    function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    function createParticles(count=150){ for(let i=0;i<count;i++){ particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,r:Math.random()*6+2,d:Math.random()*2+1,color:`hsl(${Math.random()*360},80%,60%)`,tilt:Math.random()*10-5,tiltAngleIncrement:Math.random()*0.07+0.05,tiltAngle:0}); } }
+    function drawConfetti(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{ ctx.beginPath(); ctx.lineWidth=p.r; ctx.strokeStyle=p.color; ctx.moveTo(p.x+p.tilt+p.r/4,p.y); ctx.lineTo(p.x+p.tilt,p.y+p.tilt+p.r/4); ctx.stroke(); }); updateParticles(); confettiAnimation=requestAnimationFrame(drawConfetti); }
+    function updateParticles(){ particles.forEach(p=>{ p.tiltAngle+=p.tiltAngleIncrement; p.y+=(Math.cos(p.d)+3+p.r/2)/2; p.x+=Math.sin(p.tiltAngle)*0.8; p.tilt=Math.sin(p.tiltAngle-p.r/2)*15; if(p.y>canvas.height){ p.y=-20; p.x=Math.random()*canvas.width; } }); }
+    createParticles(); drawConfetti();
+    setTimeout(()=>{ let opacity=1; const fade=setInterval(()=>{ opacity-=0.05; canvas.style.opacity=opacity; if(opacity<=0){ clearInterval(fade); cancelAnimationFrame(confettiAnimation); ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display='none'; } },50); },5000);
     </script>
 </body>
 </html>

@@ -17,7 +17,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 9999;
+        z-index: 999999; /* zawsze na wierzchu */
         transition: opacity 0.6s ease, visibility 0.6s ease;
       }
 
@@ -39,59 +39,75 @@
         opacity: 0;
         visibility: hidden;
       }
+
+      /* Ukryj zawartość do czasu pełnego załadowania */
+      body.loading .page-content {
+        visibility: hidden;
+      }
+      body.loaded .page-content {
+        visibility: visible;
+        animation: fadeIn 0.6s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
     </style>
 </head>
-<body>
+<body class="loading">
     <!-- LOADER -->
     <div id="loader">
         <div class="spinner"></div>
     </div>
 
-    {% include "partials/header.html" %}
-    <div class="main-content">
-        <div class="card-container">
-            <ul>
-                {% for stone in stones %}
-                    <li>
-                        {% include "partials/stone_card.html" with stone=stone %}
-                    </li>
-                {% empty %}
-                    <li>Brak kamieni w bazie.</li>
-                {% endfor %}
-            </ul>
+    <!-- Cała strona jako .page-content -->
+    <div class="page-content">
+        {% include "partials/header.html" %}
+        <div class="main-content">
+            <div class="card-container">
+                <ul>
+                    {% for stone in stones %}
+                        <li>
+                            {% include "partials/stone_card.html" with stone=stone %}
+                        </li>
+                    {% empty %}
+                        <li>Brak kamieni w bazie.</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 
     <script>
-      // Poczekaj aż WSZYSTKIE obrazki się załadują
       document.addEventListener("DOMContentLoaded", () => {
         const imgs = Array.from(document.images);
         let loaded = 0;
 
         if (imgs.length === 0) {
-          // jeśli nie ma obrazków, od razu chowamy loader
-          document.getElementById("loader").classList.add("hidden");
+          finishLoading();
           return;
         }
 
         imgs.forEach(img => {
           if (img.complete) {
             loaded++;
-            if (loaded === imgs.length) hideLoader();
+            if (loaded === imgs.length) finishLoading();
           } else {
-            img.addEventListener("load", () => {
-              loaded++;
-              if (loaded === imgs.length) hideLoader();
-            });
-            img.addEventListener("error", () => {
-              loaded++;
-              if (loaded === imgs.length) hideLoader();
-            });
+            img.addEventListener("load", check);
+            img.addEventListener("error", check);
           }
         });
 
-        function hideLoader() {
+        function check() {
+          loaded++;
+          if (loaded === imgs.length) finishLoading();
+        }
+
+        function finishLoading() {
           document.getElementById("loader").classList.add("hidden");
+          document.body.classList.remove("loading");
+          document.body.classList.add("loaded");
         }
       });
     </script>
