@@ -15,12 +15,39 @@
     <br>
     <button onclick="window.print()">🖨️ Drukuj</button>
     <br><br><br><br><br><br><br><br><br>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:200px; height:200px;"><br><br><br><br><br><br><br><br>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:250px; height:250px;"><br><br><br><br><br><br><br><br>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:300px; height:300px;"><br><br><br><br><br><br><br><br>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:350px; height:350px;"><br><br><br><br><br><br><br><br>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:400px; height:400px;"><br><br><br><br><br><br><br><br>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:450px; height:450px;"><br><br><br><br><br><br><br><br>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR" style="width:500px; height:500px;"><br><br><br><br><br><br><br><br>
+
+    <div id="qr-container" style="text-align:center; font-family: 'Poppins', sans-serif;"></div>
+
+<script>
+  const container = document.getElementById("qr-container");
+  const base64 = "{{ qr_base64 }}"; // Twój QR w base64
+
+  for (let i = 0; i < 6; i++) {
+    const size = 200 + i * 50;       // rozmiar QR (200, 250, 300, ...)
+    const fontSize = 50 + i * 10;     // rozmiar tekstu (20, 25, 30, ...)
+
+    const block = `
+      <div style="margin-bottom: 40px;">
+        <div style="font-size: ${fontSize}px; font-weight: 600; margin-bottom: -15px;">
+          Scan Me
+        </div>
+
+        <!-- SVG strzałki -->
+        <div style="margin-bottom: 0px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width=${fontSize} height=${fontSize} viewBox="0 0 1600 1472"><g transform="translate(0 1472) scale(1 -1)"><path fill="currentColor" d="M1579 779q0 51-37 90l-75 75q-38 38-91 38q-54 0-90-38L992 651v704q0 52-37.5 84.5T864 1472H736q-53 0-90.5-32.5T608 1355V651L314 944q-36 38-90 38t-90-38l-75-75q-38-38-38-90q0-53 38-91L710 37q35-37 90-37q54 0 91 37l651 651q37 39 37 91"/></g></svg>
+        </div>
+
+        <img src="data:image/png;base64,${base64}"
+             alt="Kod QR"
+             style="width:${size}px; height:${size}px;">
+      </div>
+    `;
+
+    container.innerHTML += block;
+  }
+</script>
+
+    <!-- Ładny font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
 </body>
 </html>
