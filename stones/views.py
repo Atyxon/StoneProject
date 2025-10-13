@@ -95,10 +95,18 @@ def stone_detail(request, pk):
 def mark_stone_found(request, token, pk):
     stone = get_object_or_404(Stone, token=token)
 
-    if stone.finder_comment is not None:
-        return redirect('stone_detail', pk=stone.pk)
+    if stone.found:
+        subject = f"[SFD] Zeskanowano kod QR kamienia: {stone.title}"
+        body = f"Ktoś właśnie zeskanował kod QR kamienia {stone.title}\n\n{settings.SITE_DOMAIN}{stone.pk}"
 
-    if not stone.found:
+        send_mail(
+            subject,
+            body,
+            "kamieniorze.auto@gmail.com",
+            ["kamieniorze@gmail.com"],
+            fail_silently=False,
+        )
+    else:
         stone.found = True
         from django.utils.timezone import now
         stone.found_at = now()
@@ -114,6 +122,9 @@ def mark_stone_found(request, token, pk):
             ["kamieniorze@gmail.com"],
             fail_silently=False,
         )
+
+    if stone.finder_comment is not None:
+        return redirect('stone_detail', pk=stone.pk)
 
     if request.method == "POST":
         form = FinderCommentForm(request.POST, request.FILES)
