@@ -1,6 +1,7 @@
 {% load static %}
 {% load l10n %}
 {% load humanize %}
+{% load cropping %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -200,7 +201,7 @@
 
                 <div class="stone-container">
                     <div class="stone-image-container">
-                        <img src="{{ stone.image.url }}" alt="{{ stone.title }}">
+                        <img src="{% cropped_thumbnail stone 'cropping' %}" alt="{{ stone.title }}">
                     </div>
                     <div class="stone-info">
                         <h3 class="stone-title">{{ stone.title }}</h3>

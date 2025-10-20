@@ -1,6 +1,7 @@
 {% load static %}
 {% load l10n %}
 {% load humanize %}
+{% load cropping %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -144,7 +145,7 @@
                     <h1>{{ stone.title }}</h1>
                     <div class="stone-top">
                         <div class="stone-image">
-                            <img src="{% if stone.image %}{{ stone.image.url }}{% else %}{% static 'app_images/no_image.jpeg' %}{% endif %}" alt="{{ stone.title }}">
+                            <img src="{% if stone.image %}{% cropped_thumbnail stone 'cropping' %}{% else %}{% static 'app_images/no_image.jpeg' %}{% endif %}" alt="{{ stone.title }}">
                         </div>
 
                         <!-- Desktop map -->

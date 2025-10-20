@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 import qrcode
 from io import BytesIO
+from image_cropping import ImageRatioField
 
 
 class Stone(models.Model):
@@ -13,6 +14,7 @@ class Stone(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='stones/images/stone_images', blank=True)
+    cropping = ImageRatioField('image', '400x400')
     found = models.BooleanField(default=False)
     found_at = models.DateTimeField(null=True, blank=True)
 

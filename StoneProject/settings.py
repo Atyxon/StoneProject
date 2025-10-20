@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from easy_thumbnails.conf import Settings as thumbnail_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "django.contrib.humanize",
     'stones',
+    'easy_thumbnails',
+    'image_cropping',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +138,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "kamieniorze.auto@gmail.com"
 EMAIL_HOST_PASSWORD = "eynn pbfh fabo cidt"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS

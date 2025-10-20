@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse
 from stones.models import Stone, Comment, FinderComment
+from image_cropping import ImageCroppingMixin
 
 
 class CommentInline(admin.TabularInline):
@@ -17,7 +18,11 @@ class FinderCommentAdmin(admin.ModelAdmin):
 
 
 @admin.register(Stone)
-class StoneAdmin(admin.ModelAdmin):
+class StoneAdmin(ImageCroppingMixin, admin.ModelAdmin):
+    class Media:
+        css = {
+            'all': ('admin_crop_grid.css',)
+        }
     list_display = ('title', 'public', 'found', 'view_stone_button')
     readonly_fields = ('generate_qr_button', 'view_stone_button')
     exclude = ('qr_code',)
